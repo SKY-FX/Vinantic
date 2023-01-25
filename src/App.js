@@ -33,10 +33,16 @@ const App = () => {
 
   useEffect(() => {
 
-    fetch("/api", {
+    fetch("/vinanticApi/createBottle", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Antoine' }),
+      body: JSON.stringify({ data: {
+        name: 'Château Pétrus',
+        price: '3350',
+        year: '2000',
+        quality: 'Très bonne',
+        imageBuffer: '',
+      }}),
     })
     .then((res) => res.json())
     .then((data) => {
