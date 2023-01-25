@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { pipe, ifElse, identity, prop } from 'ramda';
+import { pipe, ifElse, prop } from 'ramda';
 
 const AddToCartModal = ({ isOpen, onClose, selectedWine, children }) => {
   const [isVisible, setIsVisible] = useState(isOpen);

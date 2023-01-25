@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types';
 
 const AddToCart = ({ onClose }) => {
   const [quantity, setQuantity] = useState(1);
@@ -36,3 +37,10 @@ const AddToCart = ({ onClose }) => {
 };
 
 export default AddToCart;
+
+AddToCart.propTypes = {
+  isDeletedIcon: PropTypes.bool.isRequired,
+  onBeneficiaryDelete: PropTypes.func.isRequired,
+  onBeneficiaryEdit: PropTypes.func.isRequired,
+  beneficiaryLabel: PropTypes.string.isRequired
+};

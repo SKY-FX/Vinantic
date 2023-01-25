@@ -47,7 +47,7 @@ const WineList = ({ wines, description }) => {
     pageNumbers.push(i);
   }
 
-  const onAddToCart = ({ wine, idx}) => {
+  const onAddToCart = ({ wine }) => {
     setIsAddToCartModal(true);
     setSelectedWine(wine);
   };
@@ -81,7 +81,6 @@ const WineList = ({ wines, description }) => {
           </div>
           <div className="flex flex-col justify-center grid gap-16 2xl:grid-cols-6 xl:grid-cols-4 md:grid-cols-3 xs:grid-cols-2">
             { mapIndexed((wine, idx) => {
-              console.info('COUCOU', wine);
               return(
                 <div key={`wineCartModal-${idx}`} className="max-w-sm rounded overflow-hidden shadow-lg">
                   <div
@@ -98,7 +97,7 @@ const WineList = ({ wines, description }) => {
                     </div>
 
                     <div className="px-6 py-4">
-                      <button onClick={() => onAddToCart({ wine, idx} )} className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-full hover:transition-opacity duration-500">Ajouter au panier</button>
+                      <button onClick={() => onAddToCart({ wine } )} className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-full hover:transition-opacity duration-500">Ajouter au panier</button>
                     </div>
                   </div>
                 </div>

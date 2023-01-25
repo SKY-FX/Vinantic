@@ -1,11 +1,12 @@
-import { applySpec, find, isEmpty, map, pipe, pluck, prop, propEq, tap, toLower, toString } from 'ramda';
+import React from 'react';
+import { applySpec, find, isEmpty, map, prop, propEq, toLower, toString } from 'ramda';
 import { useEffect, useState } from 'react';
 import XLSX from "xlsx/dist/xlsx.full.min";
 
 import { INPUT_XLS_PATH, VINANTIC_DESCRIPTION } from './components/constants';
 import WineList from './components/VinanticPage';
+// import createBottle from '../server/models/createBottle';
 
-/* Get images data list */
 // const getImagesfromFolder = async () => {
   const imagesFromFolder = [{}];
   for (let i = 1; i <= 53; i++) {
@@ -28,14 +29,24 @@ import WineList from './components/VinanticPage';
 
 const App = () => {
   const [winesList, setWinesList] = useState([]);
-  const [error, setError] =  useState('');
+  const [setError] =  useState('');
 
   useEffect(() => {
+
+    fetch("/api", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Antoine' }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.info('data', data)
+    });
+
     const fetchImages = async () => {
         fetch(INPUT_XLS_PATH)
           .then(res => res.arrayBuffer())
           .then(ab => {
-
             /* Get xlsx data list */
             const wb = XLSX.read(ab, { type: "array" });
             const ws = wb.Sheets["Feuille1"];
@@ -48,7 +59,6 @@ const App = () => {
               const imageRef = toLower(prop('Référence', v));
 
               const imageFromFolder = find(propEq('name', imageRef))(imagesFromFolder);
-              console.info('imageref', imageFromFolder);
               return applySpec({
                 name: prop('Château'),
                 year: prop('Année'),
@@ -58,17 +68,12 @@ const App = () => {
             })(sheetToJson)
 
             setWinesList(formattedWines);
-
-            console.info('formattedWines', {sheetToJson, formattedWines, imagesFromFolder});
-
         }).catch(error => setError(error));
     };
     if (isEmpty(winesList)) fetchImages();
   }, [winesList]);
-
-  console.info('winesList', winesList);
   return (
-      <WineList wines={winesList} description={VINANTIC_DESCRIPTION} />
+    <WineList wines={winesList} description={VINANTIC_DESCRIPTION} />
   );
 }
 
