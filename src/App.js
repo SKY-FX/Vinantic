@@ -66,7 +66,7 @@ const App = () => {
 
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col h-screen border-4 border-red-200'>
       <VinanticBO wines={winesList} description={VINANTIC_DESCRIPTION} />
     </div>
   );

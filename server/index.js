@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const createBottle = require("./models/createBottle");
 const connectToDb = require("./connectToDb");
-const getBottles = require("./models/getAllBottles");
+const getBottles = require("./models/getBottles");
 const setBottles = require("./models/setAllBottles");
 const deleteBottles = require("./models/deleteBottles");
 

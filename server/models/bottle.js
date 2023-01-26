@@ -18,8 +18,8 @@ const bottleSchema = new mongoose.Schema({
     required: true
   },
   image: {
-    type: Buffer,
-    contentType: String
+    type: String,
+    required: false
   }
 });
 
