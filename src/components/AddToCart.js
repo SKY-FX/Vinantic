@@ -18,13 +18,13 @@ const AddToCart = ({ onClose }) => {
             Quantité
         </label>
         <input
-            className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="grid-zip"
-            type="number"
-            min={1}
-            defaultValue={1}
-            placeholder="1"
-            onChange={(event) => setQuantity(event.target.value)}
+          className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          id="grid-zip"
+          type="number"
+          min={1}
+          defaultValue={1}
+          placeholder="1"
+          onChange={(event) => setQuantity(event.target.value)}
         />
       </div>
       <div className="mt-5">
@@ -39,8 +39,5 @@ const AddToCart = ({ onClose }) => {
 export default AddToCart;
 
 AddToCart.propTypes = {
-  isDeletedIcon: PropTypes.bool.isRequired,
-  onBeneficiaryDelete: PropTypes.func.isRequired,
-  onBeneficiaryEdit: PropTypes.func.isRequired,
-  beneficiaryLabel: PropTypes.string.isRequired
+  onClose: PropTypes.func.isRequired
 };
