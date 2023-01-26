@@ -69,22 +69,37 @@ const VinanticBO = () => {
         </div>
         : <>
           <div className="flex justify-around my-10">
-            <button className='border p-5 text-xl w-48' onClick={handleGetXLSX}>GET BOTTLES FROM FILE</button>
+            <button
+              className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300'
+              onClick={handleGetXLSX}>
+                GET BOTTLES FROM FILE
+            </button>
             <div className="flex flex-col">
-              <button className='border p-5 text-xl w-48' onClick={handleDeleteBottles}>DELETE BOTTLES FROM BASE</button>
-              { isNotEmpty(winesList) && <button className='border p-5 text-xl w-48' onClick={handleSetBottles}>SET BOTTLES TO BASE</button>}
-              <button className='border p-5 text-xl w-48' onClick={handleGetBottles}>GET BOTTLES FROM BASE</button>
+              <button
+                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300'
+                onClick={handleDeleteBottles}>
+                  DELETE BOTTLES FROM BASE
+              </button>
+              { isNotEmpty(winesList) &&
+              <button
+                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
+                onClick={handleSetBottles}>
+                  SET BOTTLES TO BASE</button>}
+              <button
+                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
+                onClick={handleGetBottles}>
+                  GET BOTTLES FROM BASE</button>
             </div>
           </div>
 
           <div className="w-full text-center p-5 border-b-2">
-            <>
+            <div className="my-10">
               { isNotEmpty(winesList)
-                ? <p>Il y a { length(winesList) } bouteilles de vins référencées dans le fichier</p>
-                : <p>Aucune bouteille a envoyer en base ! Importez depuis un fichier.</p>
+                ? <p className="font-serif text-lg">Il y a { length(winesList) } bouteilles de vins référencées dans le fichier</p>
+                : <p className="font-serif text-lg">Aucune bouteille a envoyer en base ! Importez depuis un fichier.</p>
               }
-              {isNotEmpty(warning) && <p>{warning}</p>}
-            </>
+              {isNotEmpty(warning) && <p className="font-serif text-red-300 text-lg">{warning}</p>}
+            </div>
           </div>
         </>
       }
