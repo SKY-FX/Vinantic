@@ -8,7 +8,7 @@ import AddToCartModal from "./AddToCartModal";
 import classNames from 'classnames';
 import { mapIndexed } from "ramda-adjunct";
 
-const WineList = ({ wines, description }) => {
+const VinanticFO = ({ wines, description }) => {
   const [selectedWine, setSelectedWine] = useState({});
   const [isAddToCartModal, setIsAddToCartModal] = useState(false);
   const [query, setQuery] = useState("");
@@ -133,9 +133,9 @@ const WineList = ({ wines, description }) => {
   );
 };
 
-export default WineList;
+export default VinanticFO;
 
-WineList.propTypes = {
+VinanticFO.propTypes = {
   wines: PropTypes.array.isRequired,
   description: PropTypes.object.isRequired
 };

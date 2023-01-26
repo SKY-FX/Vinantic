@@ -3,8 +3,10 @@ import { applySpec, find, isEmpty, map, prop, propEq, propOr, toLower, toString 
 import { useEffect, useState } from 'react';
 import XLSX from "xlsx/dist/xlsx.full.min";
 
-import { INPUT_XLS_PATH, VINANTIC_DESCRIPTION } from './components/constants';
-import WineList from './components/VinanticPage';
+import { INPUT_XLS_PATH, VINANTIC_DESCRIPTION } from './components/FO/constants';
+// import { onCreateBottle, onDeleteBottles, onGetBottles, onSetBottles } from './models/bottlesModels';
+// import VinanticFO from './components/FO/VinanticFO';
+import VinanticBO from './components/BO/VinanticBO';
 
 // const getImagesfromFolder = async () => {
 const imagesFromFolder = [{}];
@@ -61,60 +63,11 @@ const App = () => {
     if (isEmpty(winesList)) fetchImages();
   }, [winesList]);
 
-  const onGetBottles = async () => {
-    await fetch("/vinanticApi/getBottles")
-      .then((res) => res.json())
-      .then((data) => {
-        console.info('onGetBottles', data)
-      });
-  };
 
-  const onCreateBottle = async () => {
-    await fetch("/vinanticApi/createBottle", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: {
-        name: 'Château Pétrus',
-        price: '3350',
-        year: '2000',
-        quality: 'Très bonne',
-        image: '',
-      }}),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.info('onCreateBottle', data)
-      });
-  };
-
-  const onSetBottles = async (bottles) => {
-    await fetch("/vinanticApi/setBottles", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: bottles}),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.info('onSetBottles', data)
-      })
-  };
-  const onDeleteBottles = async () => {
-    await fetch("/vinanticApi/deleteBottles", {
-      method: 'DELETE'
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.info('onDeleteBottles', data)
-      });
-  }
 
   return (
     <div className='flex flex-col'>
-      <button onClick={onCreateBottle}>CREATE BOTTLE</button>
-      <button onClick={onGetBottles}>GET BOTTLES</button>
-      <button onClick={onDeleteBottles}>DELETE BOTTLES</button>
-      <button onClick={() => onSetBottles(winesList)}>SET BOTTLES</button>
-      <WineList wines={winesList} description={VINANTIC_DESCRIPTION} />
+      <VinanticBO wines={winesList} description={VINANTIC_DESCRIPTION} />
     </div>
   );
 }
