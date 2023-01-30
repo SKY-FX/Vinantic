@@ -104,6 +104,22 @@ export const handleFileUpload = ({ onHandle, event, XLSX, setError }) => {
   reader.onerror = error => {
     setError(error);
   };
-  
+
   reader.readAsBinaryString(file);
+};
+
+export const onGetImagesFromFolder = async ({ onHandle }) => {
+  await fetch("/vinanticApi/getImagesFromFolder", {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: ''}),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const result = propOr([], 'result', data);
+      onHandle({
+        label: 'GET_IMAGES_PATHES_FROM_FOLDER',
+        imagesPathes: result
+      });
+    })
 };

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { equals, length } from "ramda";
+import { equals, length, prop } from "ramda";
 import XLSX from "xlsx/dist/xlsx.full.min";
-import { isNotEmpty } from "ramda-adjunct";
-import { handleFileUpload, onDeleteBottles, onGetBottles, onSetBottles } from "../../models/bottlesModels";
+import { isNotEmpty, isNotNilOrEmpty, mapIndexed } from "ramda-adjunct";
+import { handleFileUpload, onDeleteBottles, onGetBottles, onGetImagesFromFolder, onSetBottles } from "../../models/bottlesModels";
 
 const VinanticBO = () => {
-  // const hiddenFileInput = useRef(null);
   const [winesList, setWinesList] = useState([]);
+  const [imagesFromFolder, setImagesFromFolder] = useState([]);
   const [setError] =  useState('');
   const [warning, setWarning] =  useState('');
   const [isWaiting, setIsWaiting] =  useState(false);
@@ -16,14 +16,21 @@ const VinanticBO = () => {
     if (isNotEmpty(winesList)) console.info('winesList', winesList);
   }, [winesList]);
 
+  useEffect(() => {
+    if (isNotEmpty(imagesFromFolder)) console.info('imagesFromFolder', imagesFromFolder);
+  }, [imagesFromFolder]);
+
   const onFileUpload = e => {
-    console.info('COUCOU', e);
-    handleFileUpload({ onHandle, event: e, XLSX, setError });
+    if (isNotNilOrEmpty(e)) {
+      handleFileUpload({ onHandle, event: e, XLSX, setError });
+      setIsWaiting(true);
+    }
   };
 
-  // const handleClick = () => {
-  //   hiddenFileInput.current.click();
-  // };
+  const onImagesUpload = () => {
+    onGetImagesFromFolder({ onHandle });
+    setIsWaiting(true);
+  };
 
   const handleSetBottles = async () => {
     if (isNotEmpty(winesList)) {
@@ -42,7 +49,7 @@ const VinanticBO = () => {
     setIsWaiting(true);
   };
 
-  const onHandle = ({ label, deletedCount, gettedCount, settedCount, wines }) => {
+  const onHandle = ({ label, deletedCount, gettedCount, settedCount, wines, imagesPathes }) => {
     if (equals(label, 'DELETE')) {
       setWarning(`La base de donnée est vide. ${deletedCount} bouteilles ont été supprimées`);
       console.info('onHandle', label);
@@ -55,6 +62,9 @@ const VinanticBO = () => {
     } else if (equals(label, 'SET_FROM_FILE')) {
       setWinesList(wines);
       console.info('onHandle', label);
+    } else if (equals(label, 'GET_IMAGES_PATHES_FROM_FOLDER')) {
+      setImagesFromFolder(imagesPathes);
+      console.info('onHandle', { label, imagesPathes });
     }
     setIsWaiting(false);
   }
@@ -72,8 +82,8 @@ const VinanticBO = () => {
           </div>
         </div>
         : <>
-          <div className="flex justify-around my-10">
-            <div className="flex items-center">
+          <div className="flex flex-row justify-around my-10">
+            <div className="flex flex-col items-center justify-around">
               <label
                 className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 cursor-pointer"
                 onChange={onFileUpload}
@@ -85,9 +95,15 @@ const VinanticBO = () => {
                 />
                   Upload a file
               </label>
+
+              <button
+                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
+                onClick={onImagesUpload}>
+                  GET IMAGES
+              </button>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center justify-around">
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300'
                 onClick={handleDeleteBottles}>
@@ -112,32 +128,61 @@ const VinanticBO = () => {
                 : <p className="font-serif text-lg">Aucune bouteille à envoyer en base ! Importez depuis un fichier.</p>
               }
               {isNotEmpty(warning) && <p className="font-serif text-red-300 text-lg">{warning}</p>}
+              {isNotEmpty(imagesFromFolder) && <p className="font-serif text-red-300 text-lg">{`${length(imagesFromFolder)} images ont été trouvées dans le répertoire`}</p>}
             </div>
+          </div>
+
+          <div className="">
+            <table className="table-auto w-full text-left">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-2">Nom</th>
+                  <th className="px-4 py-2">Prix</th>
+                  <th className="px-4 py-2">Année</th>
+                  <th className="px-4 py-2">Qualité</th>
+                  <th className="px-4 py-2">Image</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mapIndexed((bottle, idx) => (
+                  <tr key={`bottle-${idx}`} className="hover:bg-gray-100">
+                    <td className="border px-4 py-2">{prop('name', bottle)}</td>
+                    <td className="border px-4 py-2">{prop('price', bottle)}</td>
+                    <td className="border px-4 py-2">{prop('year', bottle)}</td>
+                    <td className="border px-4 py-2">{prop('quality', bottle)}</td>
+                    <td className="border px-4 py-2">
+                      <img className="w-24" src={prop('image', bottle)} alt={prop('name', bottle)} />
+                    </td>
+                  </tr>
+                ))(winesList)}
+              </tbody>
+            </table>
           </div>
         </>
       }
     </div>
-
   )
 };
 
 // const getImagesfromFolder = async () => {
-//   const imagesFromFolder = [{}];
-//   for (let i = 1; i <= 53; i++) {
-//     const refNumber = (toString(i)).padStart(4, '0');
-//     try {
-//       imagesFromFolder.push({
-//         name: `ref_${refNumber}`,
-//         importedPhoto: require(`./assets/images/ref_${refNumber}.jpg`)
-//       });
-//     } catch (error) {
-//       if (error.code === 'MODULE_NOT_FOUND') {
-//         console.error(`File not found: ref_${refNumber}.jpg`);
-//       } else {
-//         throw error;
-//       }
+// const imagesFromFolder = [{}];
+// for (let i = 1; i <= 53; i++) {
+//   const refNumber = (toString(i)).padStart(4, '0');
+//   try {
+//     imagesFromFolder.push({
+//       name: `ref_${refNumber}`,
+//       importedPhoto: require(`../../assets/images/ref_${refNumber}.jpg`)
+//     });
+//     // console.info(`File found: ref_${refNumber}.jpg`);
+//   } catch (error) {
+//     if (error.code === 'MODULE_NOT_FOUND') {
+//       // console.error(`File not found: ref_${refNumber}.jpg`);
+//     } else {
+//       throw error;
 //     }
 //   }
+// }
+// return imagesFromFolder;
 // };
 
 export default VinanticBO;
