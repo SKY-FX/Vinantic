@@ -7,10 +7,11 @@ export const onGetBottles = async ({ onHandle }) => {
     .then((data) => {
       console.info('onGetBottles', data);
       const result = propOr([], 'result', data);
-      // if (isNotEmpty(result)) setWinesList(result);
+
       onHandle({
         label: 'GET',
-        gettedCount: length(result)
+        gettedCount: length(result),
+        bottles: result
       })
     });
 };

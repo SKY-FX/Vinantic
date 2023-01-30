@@ -1,22 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 
-import { filter, sortBy, prop, pipe } from "ramda";
+import { filter, sortBy, prop, pipe, isEmpty } from "ramda";
 
 import AddToCart from "./AddToCart";
 import AddToCartModal from "./AddToCartModal";
 import classNames from 'classnames';
 import { mapIndexed } from "ramda-adjunct";
+import { onGetBottles } from "../../models/bottlesModels";
 
-const VinanticFO = ({ wines, description }) => {
+
+// const imagesFromFolder = [{}];
+// for (let i = 1; i <= 53; i++) {
+//   const refNumber = (toString(i)).padStart(4, '0');
+//   try {
+//     imagesFromFolder.push({
+//       name: `ref_${refNumber}`,
+//       importedPhoto: require(`../../assets/images/ref_${refNumber}.jpg`)
+//     });
+//   } catch (error) {
+//     if (error.code === 'MODULE_NOT_FOUND') {
+//       console.error(`File not found: ref_${refNumber}.jpg`);
+//     } else {
+//       throw error;
+//     }
+//   }
+// }
+
+const VinanticFO = ({ description }) => {
+  const [winesList, setWinesList] = useState([]);
   const [selectedWine, setSelectedWine] = useState({});
   const [isAddToCartModal, setIsAddToCartModal] = useState(false);
   const [query, setQuery] = useState("");
   const [sortedBy, setSortedBy] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const [winesPerPage] = useState(10);
+  const [winesPerPage] = useState(50);
   const commonClass = classNames({ 'flex justify-center items-center bg-white opacity-5 transition-opacity duration-500': isAddToCartModal })
+
+  const onHandle = ({ bottles }) => {
+    console.info('GET BOTTLES', bottles);
+    setWinesList(bottles);
+  };
+
+  useEffect(() => {
+    if (isEmpty(winesList)) {
+      onGetBottles({ onHandle });
+    }
+  }, [winesList]);
 
   const handleSearch = (event) => {
     setQuery(event.target.value);
@@ -34,7 +65,7 @@ const VinanticFO = ({ wines, description }) => {
       wine.name.toLowerCase().includes(query.toLowerCase())
     ),
     sortBy(prop(sortedBy))
-  )(wines);
+  )(winesList);
 
   if (sortOrder === "desc") {
     filteredWines.reverse();
@@ -136,6 +167,5 @@ const VinanticFO = ({ wines, description }) => {
 export default VinanticFO;
 
 VinanticFO.propTypes = {
-  wines: PropTypes.array.isRequired,
   description: PropTypes.object.isRequired
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from 'prop-types';
 
 import { INPUT_XLS_PATH } from "../FO/constants";
 import { equals, length } from "ramda";
@@ -96,7 +95,7 @@ const VinanticBO = () => {
             <div className="my-10">
               { isNotEmpty(winesList)
                 ? <p className="font-serif text-lg">Il y a { length(winesList) } bouteilles de vins référencées dans le fichier</p>
-                : <p className="font-serif text-lg">Aucune bouteille a envoyer en base ! Importez depuis un fichier.</p>
+                : <p className="font-serif text-lg">Aucune bouteille à envoyer en base ! Importez depuis un fichier.</p>
               }
               {isNotEmpty(warning) && <p className="font-serif text-red-300 text-lg">{warning}</p>}
             </div>
@@ -128,8 +127,3 @@ const VinanticBO = () => {
 // };
 
 export default VinanticBO;
-
-VinanticBO.propTypes = {
-  wines: PropTypes.array.isRequired,
-  description: PropTypes.object.isRequired
-};
