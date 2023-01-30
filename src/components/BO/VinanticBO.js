@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { INPUT_XLS_PATH } from "../FO/constants";
 import { equals, length } from "ramda";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { isNotEmpty } from "ramda-adjunct";
-import { onDeleteBottles, onFetchXLSX, onGetBottles, onSetBottles } from "../../models/bottlesModels";
+import { handleFileUpload, onDeleteBottles, onGetBottles, onSetBottles } from "../../models/bottlesModels";
 
 const VinanticBO = () => {
+  // const hiddenFileInput = useRef(null);
   const [winesList, setWinesList] = useState([]);
   const [setError] =  useState('');
   const [warning, setWarning] =  useState('');
@@ -16,9 +16,14 @@ const VinanticBO = () => {
     if (isNotEmpty(winesList)) console.info('winesList', winesList);
   }, [winesList]);
 
-  const handleGetXLSX = async () => {
-    onFetchXLSX({ onHandle, filePath: INPUT_XLS_PATH, setError, XLSX });
+  const onFileUpload = e => {
+    console.info('COUCOU', e);
+    handleFileUpload({ onHandle, event: e, XLSX, setError });
   };
+
+  // const handleClick = () => {
+  //   hiddenFileInput.current.click();
+  // };
 
   const handleSetBottles = async () => {
     if (isNotEmpty(winesList)) {
@@ -68,11 +73,20 @@ const VinanticBO = () => {
         </div>
         : <>
           <div className="flex justify-around my-10">
-            <button
-              className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300'
-              onClick={handleGetXLSX}>
-                GET BOTTLES FROM FILE
-            </button>
+            <div className="flex items-center">
+              <label
+                className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 cursor-pointer"
+                onChange={onFileUpload}
+                htmlFor="uploadFileInput">
+                <input
+                  id="uploadFileInput"
+                  className="hidden"
+                  type="file"
+                />
+                  Upload a file
+              </label>
+            </div>
+
             <div className="flex flex-col">
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300'

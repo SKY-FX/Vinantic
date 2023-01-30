@@ -70,35 +70,40 @@ export const onDeleteBottles = async ({ onHandle }) => {
   }
 };
 
-export const onFetchXLSX = async ({ filePath, onHandle, setError, XLSX }) => {
-  fetch(filePath)
-    .then(res => res.arrayBuffer())
-    .then(ab => {
-    /* Get xlsx data list */
-      const wb = XLSX.read(ab, { type: "array" });
-      const ws = wb.Sheets["Feuille1"];
-      const sheetToJson = XLSX.utils.sheet_to_json(ws);
+export const handleFileUpload = ({ onHandle, event, XLSX, setError }) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = event => {
+    const bstr = event.target.result;
+    const workbook = XLSX.read(bstr, { type: 'binary' });
+    const firstSheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[firstSheetName];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-      const formattedWines = map(wine => {
-        // const imageRef = toLower(prop('Référence', wine));
-        // const imageFromFolder = find(propEq('name', imageRef))(imagesFromFolder);
-        const updatedWine = applySpec({
-          name: propOr('', 'Château'),
-          year: propOr(0, 'Année'),
-          price: propOr(0, 'Prix sur le marché'),
-          quality: propOr('bonne', 'Qualité'),
-          image: always('image') // () => propOr('', 'importedPhoto', imageFromFolder)
-        })(wine);
-        return updatedWine;
-      })(sheetToJson)
-
-
-      onHandle({
-        label: 'SET_FROM_FILE',
-        wines: formattedWines
-      });
-      // setList(formattedWines);
+    const formattedWines = map(wine => {
+      // const imageRef = toLower(prop('Référence', wine));
+      // const imageFromFolder = find(propEq('name', imageRef))(imagesFromFolder);
+      const updatedWine = applySpec({
+        name: propOr('', 'Château'),
+        year: propOr(0, 'Année'),
+        price: propOr(0, 'Prix sur le marché'),
+        quality: propOr('bonne', 'Qualité'),
+        image: always('image') // () => propOr('', 'importedPhoto', imageFromFolder)
+      })(wine);
+      return updatedWine;
+    })(jsonData)
 
 
-    }).catch(error => setError(error));
+    onHandle({
+      label: 'SET_FROM_FILE',
+      wines: formattedWines
+    });
+
+  };
+
+  reader.onerror = error => {
+    setError(error);
+  };
+  
+  reader.readAsBinaryString(file);
 };

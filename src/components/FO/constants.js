@@ -1,6 +1,3 @@
-export const INPUT_XLS_PATH = 'ListeMaCave.xlsx';
-
-
 export const WINES = [
   {
     name: "Château Margaux",
