@@ -5,7 +5,6 @@ export const onGetBottles = async ({ onHandle }) => {
   await fetch("/vinanticApi/getBottles")
     .then((res) => res.json())
     .then((data) => {
-      console.info('onGetBottles', data);
       const result = propOr([], 'result', data);
 
       onHandle({
@@ -44,7 +43,6 @@ export const onSetBottles = async ({ onHandle, winesList: bottles }) => {
       .then((res) => res.json())
       .then((data) => {
         const result = propOr([], 'result', data);
-        console.info('onSetBottles', result);
         onHandle({
           label: 'SET_BOTTLES_TO_BASE',
           settedCount: length(result)
@@ -61,7 +59,6 @@ export const onDeleteBottles = async ({ onHandle }) => {
       .then((res) => res.json())
       .then((data) => {
         const deletedCount = pathOr(0, ['result', 'deletedCount'], data)
-        console.info('onDeleteBottles', { deletedCount });
         onHandle({
           label: 'DELETE_BOTTLES_IN_BASE',
           deletedCount

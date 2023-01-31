@@ -65,25 +65,18 @@ const VinanticBO = () => {
   const onHandle = ({ label, deletedCount, gettedCount, settedCount, wines, imagesPathes, images }) => {
     if (equals(label, 'DELETE_BOTTLES_IN_BASE')) {
       setWarning(`La base de donnée est vide. ${deletedCount} bouteilles ont été supprimées`);
-      // console.info('onHandle', label);
     } else if (equals(label, 'GET_BOTTLES_FROM_BASE')) {
       setWarning(`La base de donnée est composé de ${gettedCount} bouteille(s)`);
-      // console.info('onHandle', label);
     } else if (equals(label, 'SET_BOTTLES_TO_BASE')) {
       setWarning(`La base de donnée a été mis à jour de ${settedCount} bouteille(s)`);
-      // console.info('onHandle', label);
     } else if (equals(label, 'GET_BOTTLES_FROM_FILE')) {
       setWinesList(wines);
-      // console.info('onHandle', label);
     } else if (equals(label, 'SET_IMAGES_TO_BASE')) {
       setImagesList(imagesPathes);
-      // console.info('onHandle', { label, imagesPathes });
     } else if (equals(label, 'DELETE_IMAGES_IN_BASE')) {
       setImagesList([]);
-      // console.info('onHandle', { label, imagesPathes });
     } else if (equals(label, 'GET_IMAGES_FROM_BASE')) {
       setImagesList(images);
-      console.info('onHandle', { label, images });
     }
     setIsWaiting(false);
   }

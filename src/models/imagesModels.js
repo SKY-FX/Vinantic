@@ -21,7 +21,6 @@ export const onGetImages = async ({ onHandle }) => {
   await fetch("/vinanticApi/getImages")
     .then((res) => res.json())
     .then((data) => {
-      console.info('onGetImages', data);
       const result = propOr([], 'result', data);
 
       onHandle({
@@ -40,7 +39,6 @@ export const onDeleteImages = async ({ onHandle }) => {
       .then((res) => res.json())
       .then((data) => {
         const deletedCount = pathOr(0, ['result', 'deletedCount'], data)
-        console.info('onDeleteImages', { deletedCount });
         onHandle({
           label: 'DELETE_IMAGES_IN_BASE',
           deletedCount

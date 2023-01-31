@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import LoginForm from './LoginForm';
+import { propOr } from 'ramda';
 
 const ProtectedRoute = ({ children }) => {
-  const [isLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+
+  const onHandle = ({ label, permission}) => {
+    console.info('HANDLE GET ADMIN PERMISSION', { label, permission });
+    setIsLogged(propOr(false, 'ok', permission));
+  };
+
   return <>
     { isLogged
       ? children
-      : <LoginForm />
+      : <LoginForm onHandle={onHandle} />
     }
   </>
 }

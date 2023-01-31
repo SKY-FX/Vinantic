@@ -8,9 +8,7 @@ const onUserSignIn = ({ onHandle, user: { username, password } }) => {
   })
     .then(res => res.json())
     .then((data) => {
-      console.info('onUserSignIn', data);
       const result = propOr({}, 'result', data);
-
       onHandle({
         label: 'GET_ADMIN_PERMISSION',
         permission: result

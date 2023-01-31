@@ -31,12 +31,10 @@ const VinanticFO = ({ description }) => {
   }, [winesList, imagesList]);
 
   const onHandleGetBottles = ({ bottles }) => {
-    console.info('GET BOTTLES', bottles);
     setWinesList(bottles);
   };
 
   const onHandleGetImages = ({ images }) => {
-    console.info('GET IMAGES', images);
     setImagesList(images);
   };
 

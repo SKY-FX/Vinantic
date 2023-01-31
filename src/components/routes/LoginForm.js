@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { lensProp, over } from 'ramda';
 import onUserSignIn from '../../models/userModels';
 
-const LoginForm = () => {
+const LoginForm = ({ onHandle }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -19,15 +21,9 @@ const LoginForm = () => {
     );
   };
 
-  const handle = () => {
-    console.info('HANDLE COUCO')
-  };
-
   const handleSubmit = event => {
     event.preventDefault();
-    console.info('SUBMIT', formData);
-    // Faire une requête API pour vérifier les informations de connexion
-    onUserSignIn({ handle, user: formData })
+    onUserSignIn({ onHandle, user: formData });
   };
 
   return (
@@ -86,3 +82,7 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+LoginForm.propTypes = {
+  onHandle: PropTypes.func.isRequired
+};
