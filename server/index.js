@@ -9,6 +9,9 @@ const setImagesFromFolder = require("./models/getImagesFromFolder");
 const { connectToDb } = require("./connectToDb");
 const deleteImages = require("./models/deleteImages");
 const getImages = require("./models/getImages");
+const getIsAdminUser = require("./models/getIsAdminUser");
+// const getIsAdminUser = require("./models/getIsAdminUser");
+// const getIsAdminUser = require("./models/getIsAdminUser");
 
 const PORT = process.env.PORT || 3005;
 const app = express();
@@ -31,6 +34,12 @@ const app = express();
     const { data: bottlesData } = body;
 
     setBottles(bottlesData)
+      .then((result) => res.json({ result }))
+      .catch((error) => res.json({ error }));
+  });
+
+  app.post("/vinanticApi/adminLogin", ({ body: userData }, res) => {
+    getIsAdminUser(userData)
       .then((result) => res.json({ result }))
       .catch((error) => res.json({ error }));
   });

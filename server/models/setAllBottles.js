@@ -1,7 +1,6 @@
 const Bottle = require('../schemas/bottle');
 
 const setBottles = async (bottles) => {
-  // console.info('setBottles', bottles);
   try {
     let bottlesResult = [];
     for(let i = 0; i < bottles.length; i++) {

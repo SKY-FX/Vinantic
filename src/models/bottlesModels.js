@@ -16,21 +16,6 @@ export const onGetBottles = async ({ onHandle }) => {
     });
 };
 
-export const onGetImages = async ({ onHandle }) => {
-  await fetch("/vinanticApi/getImages")
-    .then((res) => res.json())
-    .then((data) => {
-      console.info('onGetImages', data);
-      const result = propOr([], 'result', data);
-
-      onHandle({
-        label: 'GET_IMAGES_FROM_BASE',
-        gettedCount: length(result),
-        images: result
-      })
-    });
-};
-
 export const onCreateBottle = async () => {
   await fetch("/vinanticApi/createBottle", {
     method: 'POST',
@@ -85,23 +70,6 @@ export const onDeleteBottles = async ({ onHandle }) => {
   }
 };
 
-export const onDeleteImages = async ({ onHandle }) => {
-  if (isNotNilOrEmpty(onHandle)) {
-    await fetch("/vinanticApi/deleteImages", {
-      method: 'DELETE'
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const deletedCount = pathOr(0, ['result', 'deletedCount'], data)
-        console.info('onDeleteImages', { deletedCount });
-        onHandle({
-          label: 'DELETE_IMAGES_IN_BASE',
-          deletedCount
-        });
-      });
-  }
-};
-
 export const onGetBottlesFromFile = ({ onHandle, event, XLSX, setError }) => {
   const file = event.target.files[0];
   const reader = new FileReader();
@@ -138,20 +106,4 @@ export const onGetBottlesFromFile = ({ onHandle, event, XLSX, setError }) => {
   };
 
   reader.readAsBinaryString(file);
-};
-
-export const onSetImagesFromFolder = async ({ onHandle }) => {
-  await fetch("/vinanticApi/setImagesFromFolder", {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: ''}),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      const result = propOr([], 'result', data);
-      onHandle({
-        label: 'SET_IMAGES_TO_BASE',
-        imagesPathes: result
-      });
-    })
 };

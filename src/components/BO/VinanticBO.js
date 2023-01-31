@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { equals, length, prop } from "ramda";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { isNotEmpty, isNotNilOrEmpty, mapIndexed } from "ramda-adjunct";
-import { onGetBottlesFromFile, onDeleteBottles, onGetBottles, onSetImagesFromFolder, onSetBottles, onDeleteImages, onGetImages } from "../../models/bottlesModels";
+import { onDeleteBottles, onGetBottles, onSetBottles, onGetBottlesFromFile } from "../../models/bottlesModels";
 
 import { getImageSource } from "../common";
+import { onSetImagesFromFolder, onDeleteImages, onGetImages } from "../../models/imagesModels";
 
 const VinanticBO = () => {
   const [winesList, setWinesList] = useState([]);

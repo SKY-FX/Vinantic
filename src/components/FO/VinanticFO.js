@@ -7,8 +7,8 @@ import AddToCart from "./AddToCart";
 import AddToCartModal from "./AddToCartModal";
 import classNames from 'classnames';
 import { mapIndexed } from "ramda-adjunct";
-import { onGetBottles, onGetImages } from "../../models/bottlesModels";
-
+import { onGetBottles } from "../../models/bottlesModels";
+import { onGetImages } from "../../models/imagesModels";
 import { getImageSource } from "../common";
 
 const VinanticFO = ({ description }) => {
