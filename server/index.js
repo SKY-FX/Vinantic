@@ -8,6 +8,7 @@ const deleteBottles = require("./models/deleteBottles");
 const setImagesFromFolder = require("./models/getImagesFromFolder");
 const { connectToDb } = require("./connectToDb");
 const deleteImages = require("./models/deleteImages");
+const getImages = require("./models/getImages");
 
 const PORT = process.env.PORT || 3005;
 const app = express();
@@ -48,6 +49,12 @@ const app = express();
 
   app.get("/vinanticApi/getBottles", (req, res) => {
     getBottles()
+      .then((result) => res.json({ result }))
+      .catch((error) => res.json({ error }));
+  });
+
+  app.get("/vinanticApi/getImages", (req, res) => {
+    getImages()
       .then((result) => res.json({ result }))
       .catch((error) => res.json({ error }));
   });

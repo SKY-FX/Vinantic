@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { equals, length, prop } from "ramda";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { isNotEmpty, isNotNilOrEmpty, mapIndexed } from "ramda-adjunct";
-import { onGetBottlesFromFile, onDeleteBottles, onGetBottles, onSetImagesFromFolder, onSetBottles, onDeleteImages } from "../../models/bottlesModels";
+import { onGetBottlesFromFile, onDeleteBottles, onGetBottles, onSetImagesFromFolder, onSetBottles, onDeleteImages, onGetImages } from "../../models/bottlesModels";
 
 const VinanticBO = () => {
   const [winesList, setWinesList] = useState([]);
-  const [imagesFromFolder, setImagesFromFolder] = useState([]);
+  const [imagesList, setImagesList] = useState([]);
   const [setError] =  useState('');
   const [warning, setWarning] =  useState('');
   const [isWaiting, setIsWaiting] =  useState(false);
@@ -17,8 +17,8 @@ const VinanticBO = () => {
   }, [winesList]);
 
   useEffect(() => {
-    if (isNotEmpty(imagesFromFolder)) console.info('imagesFromFolder', imagesFromFolder);
-  }, [imagesFromFolder]);
+    if (isNotEmpty(imagesList)) console.info('imagesFromFolder', imagesList);
+  }, [imagesList]);
 
   const handleFileUpload = e => {
     if (isNotNilOrEmpty(e)) {
@@ -54,7 +54,12 @@ const VinanticBO = () => {
     setIsWaiting(true);
   };
 
-  const onHandle = ({ label, deletedCount, gettedCount, settedCount, wines, imagesPathes }) => {
+  const handleGetImages = async () => {
+    onGetImages({ onHandle });
+    setIsWaiting(true);
+  };
+
+  const onHandle = ({ label, deletedCount, gettedCount, settedCount, wines, imagesPathes, images }) => {
     if (equals(label, 'DELETE_BOTTLES_IN_BASE')) {
       setWarning(`La base de donnée est vide. ${deletedCount} bouteilles ont été supprimées`);
       // console.info('onHandle', label);
@@ -68,11 +73,14 @@ const VinanticBO = () => {
       setWinesList(wines);
       // console.info('onHandle', label);
     } else if (equals(label, 'SET_IMAGES_TO_BASE')) {
-      setImagesFromFolder(imagesPathes);
+      setImagesList(imagesPathes);
       // console.info('onHandle', { label, imagesPathes });
     } else if (equals(label, 'DELETE_IMAGES_IN_BASE')) {
-      setImagesFromFolder([]);
+      setImagesList([]);
       // console.info('onHandle', { label, imagesPathes });
+    } else if (equals(label, 'GET_IMAGES_FROM_BASE')) {
+      setImagesList(images);
+      console.info('onHandle', { label, images });
     }
     setIsWaiting(false);
   }
@@ -116,6 +124,12 @@ const VinanticBO = () => {
                   DELETE IMAGES IN BASE
               </button>
 
+              <button
+                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
+                onClick={handleGetImages}>
+                  GET IMAGES FROM BASE
+              </button>
+
             </div>
 
             <div className="flex flex-col items-center justify-around">
@@ -148,7 +162,7 @@ const VinanticBO = () => {
                 : <p className="font-serif text-lg">Aucune bouteille à envoyer en base ! Importez depuis un fichier.</p>
               }
               { isNotEmpty(warning) && <p className="font-serif text-red-300 text-lg">{warning}</p> }
-              { isNotEmpty(imagesFromFolder) && <p className="font-serif text-red-300 text-lg">{`${length(imagesFromFolder)} images ont été créées en base`}</p> }
+              { isNotEmpty(imagesList) && <p className="font-serif text-red-300 text-lg">{`Il y a ${length(imagesList)} images en base`}</p> }
             </div>
           </div>
 

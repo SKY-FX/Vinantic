@@ -16,6 +16,21 @@ export const onGetBottles = async ({ onHandle }) => {
     });
 };
 
+export const onGetImages = async ({ onHandle }) => {
+  await fetch("/vinanticApi/getImages")
+    .then((res) => res.json())
+    .then((data) => {
+      console.info('onGetImages', data);
+      const result = propOr([], 'result', data);
+
+      onHandle({
+        label: 'GET_IMAGES_FROM_BASE',
+        gettedCount: length(result),
+        images: result
+      })
+    });
+};
+
 export const onCreateBottle = async () => {
   await fetch("/vinanticApi/createBottle", {
     method: 'POST',
