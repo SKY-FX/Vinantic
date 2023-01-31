@@ -1,4 +1,4 @@
-import { always, applySpec, length, map, pathOr, propOr } from "ramda";
+import { applySpec, length, map, pathOr, propOr } from "ramda";
 import { isNotEmpty, isNotNilOrEmpty } from "ramda-adjunct";
 
 export const onGetBottles = async ({ onHandle }) => {
@@ -40,7 +40,7 @@ export const onCreateBottle = async () => {
       price: '3350',
       year: '2000',
       quality: 'Très bonne',
-      image: '',
+      ref: 'ref_0001',
     }}),
   })
     .then((res) => res.json())
@@ -120,7 +120,7 @@ export const onGetBottlesFromFile = ({ onHandle, event, XLSX, setError }) => {
         year: propOr(0, 'Année'),
         price: propOr(0, 'Prix sur le marché'),
         quality: propOr('bonne', 'Qualité'),
-        image: always('image') // () => propOr('', 'importedPhoto', imageFromFolder)
+        ref: propOr('', 'Référence')
       })(wine);
       return updatedWine;
     })(jsonData)

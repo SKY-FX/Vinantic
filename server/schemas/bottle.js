@@ -17,9 +17,9 @@ const bottleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  image: {
+  ref: {
     type: String,
-    required: false
+    required: true
   }
 });
 

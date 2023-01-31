@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { equals, length, prop } from "ramda";
+import { equals, find, head, last, length, prop, propOr, split, toLower } from "ramda";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { isNotEmpty, isNotNilOrEmpty, mapIndexed } from "ramda-adjunct";
 import { onGetBottlesFromFile, onDeleteBottles, onGetBottles, onSetImagesFromFolder, onSetBottles, onDeleteImages, onGetImages } from "../../models/bottlesModels";
+
+const { Buffer } = require('buffer');
 
 const VinanticBO = () => {
   const [winesList, setWinesList] = useState([]);
@@ -178,17 +180,29 @@ const VinanticBO = () => {
                 </tr>
               </thead>
               <tbody>
-                {mapIndexed((bottle, idx) => (
-                  <tr key={`bottle-${idx}`} className="hover:bg-gray-100">
+                {mapIndexed((bottle, idx) => {
+                  const imageRef = toLower(prop('ref', bottle));
+                  const foundedImage = find(image => {
+                    const imagePath = propOr('', 'filename', image);
+                    const splittedName = head(split('.', last(split("\\", imagePath))));
+                    if (equals(splittedName, imageRef)) return image
+                  })(imagesList);
+
+                  const imageSrc = foundedImage && `data:${foundedImage.contentType};base64,${Buffer.from(foundedImage.data.data).toString('base64')}`;
+
+                  return <tr key={`bottle-${idx}`} className="hover:bg-gray-100">
                     <td className="border px-4 py-2">{prop('name', bottle)}</td>
                     <td className="border px-4 py-2">{prop('price', bottle)}</td>
                     <td className="border px-4 py-2">{prop('year', bottle)}</td>
                     <td className="border px-4 py-2">{prop('quality', bottle)}</td>
                     <td className="border px-4 py-2">
-                      <img className="w-24" src={prop('image', bottle)} alt={prop('name', bottle)} />
+                      <img
+                        className="w-24"
+                        src={imageSrc}
+                        alt={prop('name', bottle)} />
                     </td>
                   </tr>
-                ))(winesList)}
+                })(winesList)}
               </tbody>
             </table>
           </div>
