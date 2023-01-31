@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { equals, find, head, last, length, prop, propOr, split, toLower } from "ramda";
+import { equals, length, prop } from "ramda";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { isNotEmpty, isNotNilOrEmpty, mapIndexed } from "ramda-adjunct";
 import { onGetBottlesFromFile, onDeleteBottles, onGetBottles, onSetImagesFromFolder, onSetBottles, onDeleteImages, onGetImages } from "../../models/bottlesModels";
 
-const { Buffer } = require('buffer');
+import { getImageSource } from "../common";
 
 const VinanticBO = () => {
   const [winesList, setWinesList] = useState([]);
@@ -181,14 +181,7 @@ const VinanticBO = () => {
               </thead>
               <tbody>
                 {mapIndexed((bottle, idx) => {
-                  const imageRef = toLower(prop('ref', bottle));
-                  const foundedImage = find(image => {
-                    const imagePath = propOr('', 'filename', image);
-                    const splittedName = head(split('.', last(split("\\", imagePath))));
-                    if (equals(splittedName, imageRef)) return image
-                  })(imagesList);
-
-                  const imageSrc = foundedImage && `data:${foundedImage.contentType};base64,${Buffer.from(foundedImage.data.data).toString('base64')}`;
+                  const imageSrc = getImageSource({ bottle, imagesList });
 
                   return <tr key={`bottle-${idx}`} className="hover:bg-gray-100">
                     <td className="border px-4 py-2">{prop('name', bottle)}</td>
@@ -211,26 +204,5 @@ const VinanticBO = () => {
     </div>
   )
 };
-
-// const getImagesfromFolder = async () => {
-// const imagesFromFolder = [{}];
-// for (let i = 1; i <= 53; i++) {
-//   const refNumber = (toString(i)).padStart(4, '0');
-//   try {
-//     imagesFromFolder.push({
-//       name: `ref_${refNumber}`,
-//       importedPhoto: require(`../../assets/images/ref_${refNumber}.jpg`)
-//     });
-//     // console.info(`File found: ref_${refNumber}.jpg`);
-//   } catch (error) {
-//     if (error.code === 'MODULE_NOT_FOUND') {
-//       // console.error(`File not found: ref_${refNumber}.jpg`);
-//     } else {
-//       throw error;
-//     }
-//   }
-// }
-// return imagesFromFolder;
-// };
 
 export default VinanticBO;

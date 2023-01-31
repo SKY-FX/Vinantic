@@ -7,27 +7,12 @@ import AddToCart from "./AddToCart";
 import AddToCartModal from "./AddToCartModal";
 import classNames from 'classnames';
 import { mapIndexed } from "ramda-adjunct";
-import { onGetBottles } from "../../models/bottlesModels";
+import { onGetBottles, onGetImages } from "../../models/bottlesModels";
 
-
-// const imagesFromFolder = [{}];
-// for (let i = 1; i <= 53; i++) {
-//   const refNumber = (toString(i)).padStart(4, '0');
-//   try {
-//     imagesFromFolder.push({
-//       name: `ref_${refNumber}`,
-//       importedPhoto: require(`../../assets/images/ref_${refNumber}.jpg`)
-//     });
-//   } catch (error) {
-//     if (error.code === 'MODULE_NOT_FOUND') {
-//       console.error(`File not found: ref_${refNumber}.jpg`);
-//     } else {
-//       throw error;
-//     }
-//   }
-// }
+import { getImageSource } from "../common";
 
 const VinanticFO = ({ description }) => {
+  const [imagesList, setImagesList] = useState([]);
   const [winesList, setWinesList] = useState([]);
   const [selectedWine, setSelectedWine] = useState({});
   const [isAddToCartModal, setIsAddToCartModal] = useState(false);
@@ -38,16 +23,22 @@ const VinanticFO = ({ description }) => {
   const [winesPerPage] = useState(50);
   const commonClass = classNames({ 'flex justify-center items-center bg-white opacity-5 transition-opacity duration-500': isAddToCartModal })
 
-  const onHandle = ({ bottles }) => {
+  useEffect(() => {
+    if (isEmpty(winesList) && isEmpty(imagesList)) {
+      onGetBottles({ onHandle: onHandleGetBottles });
+      onGetImages({ onHandle: onHandleGetImages });
+    }
+  }, [winesList, imagesList]);
+
+  const onHandleGetBottles = ({ bottles }) => {
     console.info('GET BOTTLES', bottles);
     setWinesList(bottles);
   };
 
-  useEffect(() => {
-    if (isEmpty(winesList)) {
-      onGetBottles({ onHandle });
-    }
-  }, [winesList]);
+  const onHandleGetImages = ({ images }) => {
+    console.info('GET IMAGES', images);
+    setImagesList(images);
+  };
 
   const handleSearch = (event) => {
     setQuery(event.target.value);
@@ -113,27 +104,29 @@ const VinanticFO = ({ description }) => {
             </select>
           </div>
           <div className="flex flex-col justify-center grid gap-16 2xl:grid-cols-6 xl:grid-cols-4 md:grid-cols-3 xs:grid-cols-2">
-            { mapIndexed((wine, idx) =>
-              <div key={`wineCartModal-${idx}`} className="max-w-sm rounded overflow-hidden shadow-lg">
+            { mapIndexed((bottle, idx) => {
+              const imageSrc = getImageSource({ bottle, imagesList });
+
+              return <div key={`wineCartModal-${idx}`} className="max-w-sm rounded overflow-hidden shadow-lg">
                 <div
                   key={`wineCard-${idx}`}
                   className="flex flex-col border h-full justify-between"
                 >
                   <div>
-                    <img src={prop('image', wine)} alt={wine.name}/>
+                    <img src={imageSrc} alt={bottle.name}/>
                     <div className="px-6 py-4">
-                      <div className="font-bold text-xl mb-2">{wine.name}</div>
-                      <p className="text-gray-700 text-base-sm">{wine.year}</p>
-                      <p className="text-gray-700 text-base-sm">{wine.price} €</p>
+                      <div className="font-bold text-xl mb-2">{prop('name', bottle)}</div>
+                      <p className="text-gray-700 text-base-sm">{prop('year', bottle)}</p>
+                      <p className="text-gray-700 text-base-sm">{prop('price', bottle)} €</p>
                     </div>
                   </div>
 
                   <div className="px-6 py-4">
-                    <button onClick={() => onAddToCart({ wine } )} className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-full hover:transition-opacity duration-500">Ajouter au panier</button>
+                    <button onClick={() => onAddToCart({ bottle } )} className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-full hover:transition-opacity duration-500">Ajouter au panier</button>
                   </div>
                 </div>
               </div>
-            )(currentWines)}
+            })(currentWines)}
           </div>
           <div className="my-4 flex justify-center">
             {mapIndexed((number, idx) => (
