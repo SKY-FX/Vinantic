@@ -9,7 +9,7 @@ export const onGetBottles = async ({ onHandle }) => {
       const result = propOr([], 'result', data);
 
       onHandle({
-        label: 'GET',
+        label: 'GET_BOTTLES_FROM_BASE',
         gettedCount: length(result),
         bottles: result
       })
@@ -46,7 +46,7 @@ export const onSetBottles = async ({ onHandle, winesList: bottles }) => {
         const result = propOr([], 'result', data);
         console.info('onSetBottles', result);
         onHandle({
-          label: 'SET',
+          label: 'SET_BOTTLES_TO_BASE',
           settedCount: length(result)
         });
       })
@@ -63,14 +63,31 @@ export const onDeleteBottles = async ({ onHandle }) => {
         const deletedCount = pathOr(0, ['result', 'deletedCount'], data)
         console.info('onDeleteBottles', { deletedCount });
         onHandle({
-          label: 'DELETE',
+          label: 'DELETE_BOTTLES_IN_BASE',
           deletedCount
         });
       });
   }
 };
 
-export const handleFileUpload = ({ onHandle, event, XLSX, setError }) => {
+export const onDeleteImages = async ({ onHandle }) => {
+  if (isNotNilOrEmpty(onHandle)) {
+    await fetch("/vinanticApi/deleteImages", {
+      method: 'DELETE'
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const deletedCount = pathOr(0, ['result', 'deletedCount'], data)
+        console.info('onDeleteImages', { deletedCount });
+        onHandle({
+          label: 'DELETE_IMAGES_IN_BASE',
+          deletedCount
+        });
+      });
+  }
+};
+
+export const onGetBottlesFromFile = ({ onHandle, event, XLSX, setError }) => {
   const file = event.target.files[0];
   const reader = new FileReader();
   reader.onload = event => {
@@ -95,7 +112,7 @@ export const handleFileUpload = ({ onHandle, event, XLSX, setError }) => {
 
 
     onHandle({
-      label: 'SET_FROM_FILE',
+      label: 'GET_BOTTLES_FROM_FILE',
       wines: formattedWines
     });
 
@@ -108,8 +125,8 @@ export const handleFileUpload = ({ onHandle, event, XLSX, setError }) => {
   reader.readAsBinaryString(file);
 };
 
-export const onGetImagesFromFolder = async ({ onHandle }) => {
-  await fetch("/vinanticApi/getImagesFromFolder", {
+export const onSetImagesFromFolder = async ({ onHandle }) => {
+  await fetch("/vinanticApi/setImagesFromFolder", {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ data: ''}),
@@ -118,7 +135,7 @@ export const onGetImagesFromFolder = async ({ onHandle }) => {
     .then((data) => {
       const result = propOr([], 'result', data);
       onHandle({
-        label: 'GET_IMAGES_PATHES_FROM_FOLDER',
+        label: 'SET_IMAGES_TO_BASE',
         imagesPathes: result
       });
     })

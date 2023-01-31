@@ -1,4 +1,4 @@
-const Bottle = require('./bottle');
+const Bottle = require('../schemas/bottle');
 
 const setBottles = async (bottles) => {
   // console.info('setBottles', bottles);

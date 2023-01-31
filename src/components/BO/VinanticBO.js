@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { equals, length, prop } from "ramda";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { isNotEmpty, isNotNilOrEmpty, mapIndexed } from "ramda-adjunct";
-import { handleFileUpload, onDeleteBottles, onGetBottles, onGetImagesFromFolder, onSetBottles } from "../../models/bottlesModels";
+import { onGetBottlesFromFile, onDeleteBottles, onGetBottles, onSetImagesFromFolder, onSetBottles, onDeleteImages } from "../../models/bottlesModels";
 
 const VinanticBO = () => {
   const [winesList, setWinesList] = useState([]);
@@ -20,15 +20,20 @@ const VinanticBO = () => {
     if (isNotEmpty(imagesFromFolder)) console.info('imagesFromFolder', imagesFromFolder);
   }, [imagesFromFolder]);
 
-  const onFileUpload = e => {
+  const handleFileUpload = e => {
     if (isNotNilOrEmpty(e)) {
-      handleFileUpload({ onHandle, event: e, XLSX, setError });
+      onGetBottlesFromFile({ onHandle, event: e, XLSX, setError });
       setIsWaiting(true);
     }
   };
 
-  const onImagesUpload = () => {
-    onGetImagesFromFolder({ onHandle });
+  const handleImagesUpload = () => {
+    onSetImagesFromFolder({ onHandle });
+    setIsWaiting(true);
+  };
+
+  const handleImagesDelete = () => {
+    onDeleteImages({ onHandle });
     setIsWaiting(true);
   };
 
@@ -50,21 +55,24 @@ const VinanticBO = () => {
   };
 
   const onHandle = ({ label, deletedCount, gettedCount, settedCount, wines, imagesPathes }) => {
-    if (equals(label, 'DELETE')) {
+    if (equals(label, 'DELETE_BOTTLES_IN_BASE')) {
       setWarning(`La base de donnée est vide. ${deletedCount} bouteilles ont été supprimées`);
-      console.info('onHandle', label);
-    } else if (equals(label, 'GET')) {
+      // console.info('onHandle', label);
+    } else if (equals(label, 'GET_BOTTLES_FROM_BASE')) {
       setWarning(`La base de donnée est composé de ${gettedCount} bouteille(s)`);
-      console.info('onHandle', label);
-    } else if (equals(label, 'SET')) {
+      // console.info('onHandle', label);
+    } else if (equals(label, 'SET_BOTTLES_TO_BASE')) {
       setWarning(`La base de donnée a été mis à jour de ${settedCount} bouteille(s)`);
-      console.info('onHandle', label);
-    } else if (equals(label, 'SET_FROM_FILE')) {
+      // console.info('onHandle', label);
+    } else if (equals(label, 'GET_BOTTLES_FROM_FILE')) {
       setWinesList(wines);
-      console.info('onHandle', label);
-    } else if (equals(label, 'GET_IMAGES_PATHES_FROM_FOLDER')) {
+      // console.info('onHandle', label);
+    } else if (equals(label, 'SET_IMAGES_TO_BASE')) {
       setImagesFromFolder(imagesPathes);
-      console.info('onHandle', { label, imagesPathes });
+      // console.info('onHandle', { label, imagesPathes });
+    } else if (equals(label, 'DELETE_IMAGES_IN_BASE')) {
+      setImagesFromFolder([]);
+      // console.info('onHandle', { label, imagesPathes });
     }
     setIsWaiting(false);
   }
@@ -86,21 +94,28 @@ const VinanticBO = () => {
             <div className="flex flex-col items-center justify-around">
               <label
                 className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 cursor-pointer"
-                onChange={onFileUpload}
+                onChange={handleFileUpload}
                 htmlFor="uploadFileInput">
                 <input
                   id="uploadFileInput"
                   className="hidden"
                   type="file"
                 />
-                  Upload a file
+                  UPLOAD EXCEL FILE
               </label>
 
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
-                onClick={onImagesUpload}>
-                  GET IMAGES
+                onClick={handleImagesUpload}>
+                  GET AND SET IMAGES TO BASE
               </button>
+
+              <button
+                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
+                onClick={handleImagesDelete}>
+                  DELETE IMAGES IN BASE
+              </button>
+
             </div>
 
             <div className="flex flex-col items-center justify-around">
@@ -109,15 +124,20 @@ const VinanticBO = () => {
                 onClick={handleDeleteBottles}>
                   DELETE BOTTLES FROM BASE
               </button>
+
               { isNotEmpty(winesList) &&
-              <button
-                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
-                onClick={handleSetBottles}>
-                  SET BOTTLES TO BASE</button>}
+                <button
+                  className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
+                  onClick={handleSetBottles}>
+                    SET BOTTLES TO BASE
+                </button>
+              }
+
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
                 onClick={handleGetBottles}>
-                  GET BOTTLES FROM BASE</button>
+                  GET BOTTLES FROM BASE
+              </button>
             </div>
           </div>
 
@@ -127,8 +147,8 @@ const VinanticBO = () => {
                 ? <p className="font-serif text-lg">Il y a { length(winesList) } bouteilles de vins référencées dans le fichier</p>
                 : <p className="font-serif text-lg">Aucune bouteille à envoyer en base ! Importez depuis un fichier.</p>
               }
-              {isNotEmpty(warning) && <p className="font-serif text-red-300 text-lg">{warning}</p>}
-              {isNotEmpty(imagesFromFolder) && <p className="font-serif text-red-300 text-lg">{`${length(imagesFromFolder)} images ont été trouvées dans le répertoire`}</p>}
+              { isNotEmpty(warning) && <p className="font-serif text-red-300 text-lg">{warning}</p> }
+              { isNotEmpty(imagesFromFolder) && <p className="font-serif text-red-300 text-lg">{`${length(imagesFromFolder)} images ont été créées en base`}</p> }
             </div>
           </div>
 

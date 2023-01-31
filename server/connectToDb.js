@@ -1,36 +1,26 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const Grid = require('gridfs-stream');
 mongoose.set('strictQuery', false);
 
 dotenv.config();
 
-let gfs;
+let connection;
 
 const connectToDb = async () => {
+  if (connection) return Promise.resolve(connection);
+
   try {
     const connection = await mongoose.connect(
       `${process.env.MONGO_URI}/${process.env.MONGO_DB_NAME}`,
       { useNewUrlParser: true }
     );
+
     console.log(`MongoDB connected: ${connection.connection.host}`);
-
-    // if (connection) {
-    //   /* Initialize the stream */
-    // gfs = Grid(connection.db, mongoose.mongo);
-    // gfs.collection('imageMeta');
-    // }
-
-    // return ({ gfs });
-
+    return Promise.resolve(connection);
   } catch (err) {
     console.log(`Error: ${err.message}`);
     process.exit(1);
   }
 };
 
-// Connect to the database
-// connectToDb();
-
-// Export the gfs object
-module.exports = connectToDb;
+module.exports = { connectToDb };
