@@ -102,7 +102,7 @@ const VinanticFO = ({ description }) => {
             </select>
           </div>
 
-          <div className="flex flex-col justify-center grid gap-16 2xl:grid-cols-6 xl:grid-cols-4 md:grid-cols-3 xs:grid-cols-2">
+          <div className="flex flex-col justify-center grid gap-5 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-2">
             { mapIndexed((bottle, idx) => {
               const imageSrc = getImageSource({ bottle, imagesList });
 
@@ -111,23 +111,23 @@ const VinanticFO = ({ description }) => {
                   key={`wineCard-${idx}`}
                   className="max-w-sm rounded overflow-hidden shadow-lg transition duration-500 ease-in-out transform hover:scale-105"
                 >
-                  <div className="flex flex-col border h-full justify-between bg-gray-100">
-                    <div className="p-5">
-                      <img src={imageSrc} alt={bottle.name} />
+                  <div className="bg-stone-50 flex flex-col border h-full justify-between bg-white">
+                    <div>
+                      { imageSrc && <img src={imageSrc} alt={bottle.name} /> }
                       <div className="mt-5">
                         <p className="font-serif font-bold text-xl mb-2 text-gray-500">{prop('name', bottle)}</p>
-                        <p className="font-serif text-gray-700 text-base-sm">{prop('year', bottle)}</p>
+                        <p className="font-serif text-gray-700 text-base-sm mt-2">{prop('year', bottle)}</p>
                       </div>
                     </div>
 
-                    <div className="mt-3 mb-5">
+                    <div className="mt-8 mb-5">
                       <button
                         onClick={() => onAddToCart({ bottle })}
-                        className="font-serif bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-xl hover:transition-opacity duration-500"
+                        className="font-serif bg-rose-50 hover:bg-rose-100 text-black font-medium py-3 px-6 rounded-xl hover:transition-opacity duration-500"
                       >
                         Ajouter au panier
                       </button>
-                      <p className="font-serif text-gray-700 text-base-sm font-medium mt-2 text-indigo-600">{prop('price', bottle)} €</p>
+                      <p className="font-serif text-gray-400 text-base-sm font-medium mt-2 text-indigo-600">{prop('price', bottle)} €</p>
                     </div>
                   </div>
                 </div>

@@ -31,7 +31,8 @@ module.exports = {
     "no-console": "off",
     "max-len": "off",
     "no-useless-catch": "off",
-    "indent": ["error", 2]
+    "indent": ["error", 2],
+    "no-unused-vars": "off"
   },
   settings: {
     react: {
