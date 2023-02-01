@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3005;
 const app = express();
 
 (async () => {
-  const gfs = await connectToDb();
+  await connectToDb();
 
   // Do something with gfs
   app.use(bodyParser.json());
@@ -69,7 +69,7 @@ const app = express();
   });
 
   app.post('/vinanticApi/setImagesFromFolder', (req, res) => {
-    setImagesFromFolder({ gfs })
+    setImagesFromFolder()
       .then(result => res.send({ result }))
       .catch(err => res.status(500).send({ error: err.message }));
   });

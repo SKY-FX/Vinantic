@@ -10,7 +10,7 @@ const connectToDb = async () => {
   if (connection) return Promise.resolve(connection);
 
   try {
-    const connection = await mongoose.connect(
+    connection = await mongoose.connect(
       `${process.env.MONGO_URI}/${process.env.MONGO_DB_NAME}`,
       { useNewUrlParser: true }
     );

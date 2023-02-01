@@ -1,6 +1,5 @@
 const User = require('../schemas/user');
-// const bcrypt = require('bcrypt');
-const { equals } = require('ramda');
+const bcrypt = require('bcrypt');
 
 const getIsAdminUser = async ({ username, password }) => {
   try {
@@ -11,8 +10,7 @@ const getIsAdminUser = async ({ username, password }) => {
       message: 'Utilisateur non trouvé.'
     };
 
-    // const isMatch = await bcrypt.compare(password, user.password);
-    const isMatch = equals(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) return {
       ok: false,
