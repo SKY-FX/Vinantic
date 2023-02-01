@@ -101,31 +101,40 @@ const VinanticFO = ({ description }) => {
               <option value="price">Prix</option>
             </select>
           </div>
+
           <div className="flex flex-col justify-center grid gap-16 2xl:grid-cols-6 xl:grid-cols-4 md:grid-cols-3 xs:grid-cols-2">
             { mapIndexed((bottle, idx) => {
               const imageSrc = getImageSource({ bottle, imagesList });
 
-              return <div key={`wineCartModal-${idx}`} className="max-w-sm rounded overflow-hidden shadow-lg">
+              return (
                 <div
                   key={`wineCard-${idx}`}
-                  className="flex flex-col border h-full justify-between"
+                  className="max-w-sm rounded overflow-hidden shadow-lg transition duration-500 ease-in-out transform hover:scale-105"
                 >
-                  <div>
-                    <img src={imageSrc} alt={bottle.name}/>
-                    <div className="px-6 py-4">
-                      <div className="font-bold text-xl mb-2">{prop('name', bottle)}</div>
-                      <p className="text-gray-700 text-base-sm">{prop('year', bottle)}</p>
-                      <p className="text-gray-700 text-base-sm">{prop('price', bottle)} €</p>
+                  <div className="flex flex-col border h-full justify-between bg-gray-100">
+                    <div className="p-5">
+                      <img src={imageSrc} alt={bottle.name} />
+                      <div className="mt-5">
+                        <p className="font-serif font-bold text-xl mb-2 text-gray-500">{prop('name', bottle)}</p>
+                        <p className="font-serif text-gray-700 text-base-sm">{prop('year', bottle)}</p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 mb-5">
+                      <button
+                        onClick={() => onAddToCart({ bottle })}
+                        className="font-serif bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-xl hover:transition-opacity duration-500"
+                      >
+                        Ajouter au panier
+                      </button>
+                      <p className="font-serif text-gray-700 text-base-sm font-medium mt-2 text-indigo-600">{prop('price', bottle)} €</p>
                     </div>
                   </div>
-
-                  <div className="px-6 py-4">
-                    <button onClick={() => onAddToCart({ bottle } )} className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-full hover:transition-opacity duration-500">Ajouter au panier</button>
-                  </div>
                 </div>
-              </div>
+              );
             })(currentWines)}
           </div>
+
           <div className="my-4 flex justify-center">
             {mapIndexed((number, idx) => (
               <button

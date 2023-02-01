@@ -95,7 +95,7 @@ const VinanticBO = () => {
         </div>
         : <>
           <div className="flex flex-row justify-around my-10">
-            <div className="flex flex-col items-center justify-around">
+            <div className="flex flex-col items-center justify-around p-10 border">
               <label
                 className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 cursor-pointer"
                 onChange={handleFileUpload}
@@ -110,14 +110,14 @@ const VinanticBO = () => {
 
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
-                onClick={handleImagesUpload}>
-                  GET AND SET IMAGES TO BASE
+                onClick={handleSetBottles}>
+                    SET BOTTLES TO BASE
               </button>
 
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
-                onClick={handleImagesDelete}>
-                  DELETE IMAGES IN BASE
+                onClick={handleImagesUpload}>
+                  GET AND SET IMAGES TO BASE
               </button>
 
               <button
@@ -125,23 +125,20 @@ const VinanticBO = () => {
                 onClick={handleGetImages}>
                   GET IMAGES FROM BASE
               </button>
-
             </div>
 
-            <div className="flex flex-col items-center justify-around">
+            <div className="flex flex-col items-center justify-around p-10 border">
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300'
                 onClick={handleDeleteBottles}>
-                  DELETE BOTTLES FROM BASE
+                  DELETE BOTTLES IN BASE
               </button>
 
-              { isNotEmpty(winesList) &&
-                <button
-                  className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
-                  onClick={handleSetBottles}>
-                    SET BOTTLES TO BASE
-                </button>
-              }
+              <button
+                className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
+                onClick={handleImagesDelete}>
+                  DELETE IMAGES IN BASE
+              </button>
 
               <button
                 className='transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10'
