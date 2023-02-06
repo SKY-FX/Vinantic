@@ -114,13 +114,13 @@ const VinanticFO = ({ description }) => {
                   <div className="bg-stone-100 flex flex-col border rounded-3xl h-full justify-between bg-white">
                     <div className="m-4">
                       { imageSrc && <img src={imageSrc} alt={bottle.name} className='border-2 border-stone-300 rounded-3xl transition duration-1000 ease-in-out transform hover:scale-150' /> }
-                      <div className="mt-5">
+                      <div className="mt-7">
                         <p className="font-serif font-bold text-xl mb-2 text-gray-500">{prop('name', bottle)}</p>
                         <p className="font-serif text-gray-700 text-base-sm mt-2">{prop('year', bottle)}</p>
                       </div>
                     </div>
 
-                    <div className="mt-8 mb-5">
+                    <div className="mt-5 mb-5">
                       <button
                         onClick={() => onAddToCart({ bottle })}
                         className="border font-serif bg-gray-50 hover:bg-green-100 text-black font-medium py-3 px-6 rounded-xl hover: duration-500"

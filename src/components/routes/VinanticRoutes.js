@@ -7,6 +7,7 @@ import VinanticBO from '../BO/VinanticBO';
 import { NavBar } from '../routes/NavBar';
 import NoMatchRoute from './NoMatchRoute';
 import ProtectedRoute from './ProtectedRoute';
+import Mandelbrot from './Mandelbrot/Mandelbrot';
 
 const VinanticRoutes = () => (
   <div className='h-screen'>
@@ -22,6 +23,7 @@ const VinanticRoutes = () => (
             </ProtectedRoute>
           }
         />
+        <Route path="mandelbrot" element={<Mandelbrot />} />
         <Route path="*" element={<NoMatchRoute />} />
       </Routes>
     </Router>
