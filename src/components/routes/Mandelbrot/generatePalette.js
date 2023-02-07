@@ -1,17 +1,17 @@
 import { generateColorLinear, generateColorLogarithmic, generateColorSmoothed } from "./palettes";
 
 // Générer la palette de couleurs
-export const generatePalette = ({ maxIterations, colorMethod }) => {
+export const generatePalette = ({ maxIterations, colorMethod, cutOffSet }) => {
   let palette = [];
   switch (colorMethod) {
   case 'LINEAR':
-    palette = getPalette({ maxIterations, colorMethod: generateColorLinear });
+    palette = getPalette({ maxIterations, cutOffSet, colorMethod: generateColorLinear });
     break;
   case 'LOG':
-    palette = getPalette({ maxIterations, colorMethod: generateColorLogarithmic });
+    palette = getPalette({ maxIterations, cutOffSet, colorMethod: generateColorLogarithmic });
     break;
   case 'SMOOTH':
-    palette = getPalette({ maxIterations, colorMethod: generateColorSmoothed });
+    palette = getPalette({ maxIterations, cutOffSet, colorMethod: generateColorSmoothed });
     break;
   default:
     throw new Error(`Unsupported color method: ${colorMethod}`);
@@ -19,10 +19,10 @@ export const generatePalette = ({ maxIterations, colorMethod }) => {
   return palette;
 }
 
-function getPalette({ maxIterations, colorMethod }) {
+function getPalette({ maxIterations, cutOffSet, colorMethod }) {
   const palette = [];
   for (let i = 0; i < maxIterations; i++) {
-    palette[i] = colorMethod(i, maxIterations);
+    palette[i] = colorMethod(i-cutOffSet, maxIterations);
   }
   return palette;
 }

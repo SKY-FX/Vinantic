@@ -46,3 +46,24 @@ export const onDeleteImages = async ({ onHandle }) => {
       });
   }
 };
+
+export const onWriteImage = async ({ onHandle, mandelbrotParams }) => {
+  if (isNotNilOrEmpty(onHandle) && isNotNilOrEmpty(mandelbrotParams)) {
+    await fetch("/vinanticApi/writeImageInFile", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: {
+        mandelbrotParams,
+        path: './tototata.jpeg'
+      }}),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const isWritedFile = propOr(false, 'result', data)
+        onHandle({
+          label: 'WRITE_IMAGES_IN_FILE',
+          isWritedFile
+        });
+      });
+  }
+};

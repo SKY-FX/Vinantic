@@ -10,6 +10,7 @@ const { connectToDb } = require("./connectToDb");
 const deleteImages = require("./models/deleteImages");
 const getImages = require("./models/getImages");
 const getIsAdminUser = require("./models/getIsAdminUser");
+const writeImageInFile = require("./models/writeImageInFile");
 // const getIsAdminUser = require("./models/getIsAdminUser");
 // const getIsAdminUser = require("./models/getIsAdminUser");
 
@@ -52,6 +53,14 @@ const app = express();
 
   app.delete("/vinanticApi/deleteImages", (req, res) => {
     deleteImages()
+      .then((result) => res.json({ result }))
+      .catch((error) => res.json({ error }));
+  });
+
+  app.post("/vinanticApi/writeImageInFile", ({ body }, res) => {
+    const { data: { mandelbrotParams, path } } = body;
+
+    writeImageInFile({ mandelbrotParams, path })
       .then((result) => res.json({ result }))
       .catch((error) => res.json({ error }));
   });
