@@ -1,4 +1,4 @@
-const Image = require('../schemas/image');
+const Image = require("../schemas/image");
 
 const getImages = async () => {
   try {

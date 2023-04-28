@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import { filter, sortBy, prop, pipe, isEmpty } from "ramda";
 
 import AddToCart from "./AddToCart";
 import AddToCartModal from "./AddToCartModal";
-import classNames from 'classnames';
+import classNames from "classnames";
 import { mapIndexed } from "ramda-adjunct";
 import { onGetBottles } from "../../models/bottlesModels";
 import { onGetImages } from "../../models/imagesModels";
@@ -21,7 +21,10 @@ const VinanticFO = ({ description }) => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [winesPerPage] = useState(50);
-  const commonClass = classNames({ 'flex justify-center items-center bg-white opacity-5 transition-opacity duration-500': isAddToCartModal })
+  const commonClass = classNames({
+    "flex justify-center items-center bg-white opacity-5 transition-opacity duration-500":
+      isAddToCartModal,
+  });
 
   useEffect(() => {
     if (isEmpty(winesList) && isEmpty(imagesList)) {
@@ -50,9 +53,7 @@ const VinanticFO = ({ description }) => {
   };
 
   const filteredWines = pipe(
-    filter((wine) =>
-      wine.name.toLowerCase().includes(query.toLowerCase())
-    ),
+    filter((wine) => wine.name.toLowerCase().includes(query.toLowerCase())),
     sortBy(prop(sortedBy))
   )(winesList);
 
@@ -76,12 +77,17 @@ const VinanticFO = ({ description }) => {
 
   return (
     <>
-      <div className={classNames(commonClass, "flex flex-col justify-center items-center text-center")}>
+      <div
+        className={classNames(
+          commonClass,
+          "flex flex-col justify-center items-center text-center"
+        )}
+      >
         <div className="flex flex-col justify-center items-center w-2/3 border-b p-10">
           <h1 className="text-4xl my-20">VINANTIC</h1>
-          <h2 className="mb-5">{prop('head', description)}</h2>
-          <h2 className="mb-5">{prop('content_1', description)}</h2>
-          <h2>{prop('content_2', description)}</h2>
+          <h2 className="mb-5">{prop("head", description)}</h2>
+          <h2 className="mb-5">{prop("content_1", description)}</h2>
+          <h2>{prop("content_2", description)}</h2>
         </div>
         <div className="mt-10 px-20 w-full">
           <div className="flex mb-10">
@@ -102,21 +108,28 @@ const VinanticFO = ({ description }) => {
             </select>
           </div>
 
-          <div className="flex flex-col justify-center grid gap-5 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1">
-            { mapIndexed((bottle, idx) => {
+          <div className="justify-center grid gap-5 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1">
+            {mapIndexed((bottle, idx) => {
               const imageSrc = getImageSource({ bottle, imagesList });
 
               return (
-                <div
-                  key={`wineCard-${idx}`}
-                  className="rounded-3xl shadow-md"
-                >
-                  <div className="bg-stone-100 flex flex-col border rounded-3xl h-full justify-between bg-white">
+                <div key={`wineCard-${idx}`} className="rounded-3xl shadow-md">
+                  <div className="bg-stone-100 flex flex-col border rounded-3xl h-full justify-between">
                     <div className="m-4">
-                      { imageSrc && <img src={imageSrc} alt={bottle.name} className='border-2 border-stone-300 rounded-3xl transition duration-1000 ease-in-out transform hover:scale-150' /> }
+                      {imageSrc && (
+                        <img
+                          src={imageSrc}
+                          alt={bottle.name}
+                          className="border-2 border-stone-300 rounded-3xl transition duration-1000 ease-in-out transform hover:scale-150"
+                        />
+                      )}
                       <div className="mt-7">
-                        <p className="font-serif font-bold text-xl mb-2 text-gray-500">{prop('name', bottle)}</p>
-                        <p className="font-serif text-gray-700 text-base-sm mt-2">{prop('year', bottle)}</p>
+                        <p className="font-serif font-bold text-xl mb-2 text-gray-500">
+                          {prop("name", bottle)}
+                        </p>
+                        <p className="font-serif text-gray-700 text-base-sm mt-2">
+                          {prop("year", bottle)}
+                        </p>
                       </div>
                     </div>
 
@@ -127,7 +140,9 @@ const VinanticFO = ({ description }) => {
                       >
                         Ajouter au panier
                       </button>
-                      <p className="font-serif text-gray-400 text-base-sm font-medium mt-2">{prop('price', bottle)} €</p>
+                      <p className="font-serif text-gray-400 text-base-sm font-medium mt-2">
+                        {prop("price", bottle)} €
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -139,7 +154,9 @@ const VinanticFO = ({ description }) => {
             {mapIndexed((number, idx) => (
               <button
                 key={`pagination-${idx}`}
-                className={`bg-white text-gray-800 font-medium py-2 px-4 rounded-full m-2 ${currentPage === number ? 'bg-indigo-500 text-white' : ''}`}
+                className={`bg-white text-gray-800 font-medium py-2 px-4 rounded-full m-2 ${
+                  currentPage === number ? "bg-indigo-500 text-white" : ""
+                }`}
                 onClick={() => setCurrentPage(number)}
               >
                 {number}
@@ -149,23 +166,22 @@ const VinanticFO = ({ description }) => {
         </div>
       </div>
       <>
-        { isAddToCartModal && <AddToCartModal
-          isOpen={isAddToCartModal}
-          onClose={() => setIsAddToCartModal(false)}
-          selectedWine={selectedWine}
-        >
-          <AddToCart
-            onClose={() => setIsAddToCartModal(false)}/>
-        </AddToCartModal>
-        }
+        {isAddToCartModal && (
+          <AddToCartModal
+            isOpen={isAddToCartModal}
+            onClose={() => setIsAddToCartModal(false)}
+            selectedWine={selectedWine}
+          >
+            <AddToCart onClose={() => setIsAddToCartModal(false)} />
+          </AddToCartModal>
+        )}
       </>
     </>
-
   );
 };
 
 export default VinanticFO;
 
 VinanticFO.propTypes = {
-  description: PropTypes.object.isRequired
+  description: PropTypes.object.isRequired,
 };

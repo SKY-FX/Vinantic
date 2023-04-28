@@ -1,38 +1,32 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import { lensProp, over } from 'ramda';
-import onUserSignIn from '../../models/userModels';
+import { lensProp, over } from "ramda";
+import onUserSignIn from "../../models/userModels";
 
 const LoginForm = ({ onHandle }) => {
   const [formData, setFormData] = useState({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
 
-  const handleChange = fieldName => event => {
+  const handleChange = (fieldName) => (event) => {
     const newValue = event.target.value;
-    setFormData(
-      over(
-        lensProp(fieldName),
-        () => newValue,
-        formData
-      )
-    );
+    setFormData(over(lensProp(fieldName), () => newValue, formData));
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     onUserSignIn({ onHandle, user: formData });
   };
 
   return (
-    <div className='flex justify-center items-center w-full mt-20'>
+    <div className="flex justify-center items-center w-full mt-20">
       <form
         className="bg-white p-6 rounded-lg shadow-md w-1/2"
         onSubmit={handleSubmit}
       >
-        <div className='flex justify-center'>
+        <div className="flex justify-center">
           <h1 className="text-lg font-medium mb-10">Connexion</h1>
         </div>
 
@@ -48,7 +42,7 @@ const LoginForm = ({ onHandle }) => {
             id="username"
             type="text"
             value={formData.username}
-            onChange={handleChange('username')}
+            onChange={handleChange("username")}
           />
         </div>
 
@@ -64,16 +58,16 @@ const LoginForm = ({ onHandle }) => {
             id="password"
             type="password"
             value={formData.password}
-            onChange={handleChange('password')}
+            onChange={handleChange("password")}
           />
         </div>
 
-        <div className='flex justify-center mt-10'>
+        <div className="flex justify-center mt-10">
           <button
             className="bg-indigo-500 text-white px-5 py-2 rounded-lg hover:bg-indigo-600"
             type="submit"
           >
-          Se connecter
+            Se connecter
           </button>
         </div>
       </form>
@@ -84,5 +78,5 @@ const LoginForm = ({ onHandle }) => {
 export default LoginForm;
 
 LoginForm.propTypes = {
-  onHandle: PropTypes.func.isRequired
+  onHandle: PropTypes.func.isRequired,
 };

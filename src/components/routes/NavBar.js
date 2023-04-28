@@ -1,11 +1,10 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
 
-
 export const NavBar = () => (
-  <div className='p-10 border'>
+  <div className="p-10 border">
     <nav>
-      <ul className='flex justify-between'>
+      <ul className="flex justify-between">
         <li>
           <Link to="/fo/vinantic">Vinantic</Link>
         </li>

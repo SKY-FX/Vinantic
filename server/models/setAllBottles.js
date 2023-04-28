@@ -1,9 +1,9 @@
-const Bottle = require('../schemas/bottle');
+const Bottle = require("../schemas/bottle");
 
 const setBottles = async (bottles) => {
   try {
     let bottlesResult = [];
-    for(let i = 0; i < bottles.length; i++) {
+    for (let i = 0; i < bottles.length; i++) {
       const bottle = new Bottle(bottles[i]);
       await bottle.save();
       bottlesResult.push(bottle);

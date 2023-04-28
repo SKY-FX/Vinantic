@@ -1,13 +1,12 @@
-const User = require('../schemas/user');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-mongoose.set('strictQuery', false);
-
+const User = require("../schemas/user");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+mongoose.set("strictQuery", false);
 
 // Connexion à MongoDB
-mongoose.connect('mongodb://localhost:27017/vinantic', {
+mongoose.connect("mongodb://localhost:27017/vinantic", {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 async function registerUser(username, password) {
@@ -23,11 +22,11 @@ async function registerUser(username, password) {
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   const user = new User({
     username: username,
-    password: hashedPassword
+    password: hashedPassword,
   });
   await user.save();
 
-  console.log('User registered successfully');
+  console.log("User registered successfully");
 }
 
 const [, , username, password] = process.argv;

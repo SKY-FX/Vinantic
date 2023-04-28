@@ -1,4 +1,4 @@
-const Bottle = require('../schemas/bottle');
+const Bottle = require("../schemas/bottle");
 
 const deleteBottles = async () => {
   try {

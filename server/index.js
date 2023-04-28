@@ -1,6 +1,6 @@
 /* server/index.js */
 const express = require("express");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const createBottle = require("./models/createBottle");
 const getBottles = require("./models/getBottles");
 const setBottles = require("./models/setAllBottles");
@@ -11,8 +11,6 @@ const deleteImages = require("./models/deleteImages");
 const getImages = require("./models/getImages");
 const getIsAdminUser = require("./models/getIsAdminUser");
 const writeImageInFile = require("./models/writeImageInFile");
-// const getIsAdminUser = require("./models/getIsAdminUser");
-// const getIsAdminUser = require("./models/getIsAdminUser");
 
 const PORT = process.env.PORT || 3005;
 const app = express();
@@ -58,7 +56,9 @@ const app = express();
   });
 
   app.post("/vinanticApi/writeImageInFile", ({ body }, res) => {
-    const { data: { mandelbrotParams, path } } = body;
+    const {
+      data: { mandelbrotParams, path },
+    } = body;
 
     writeImageInFile({ mandelbrotParams, path })
       .then((result) => res.json({ result }))
@@ -77,10 +77,10 @@ const app = express();
       .catch((error) => res.json({ error }));
   });
 
-  app.post('/vinanticApi/setImagesFromFolder', (req, res) => {
+  app.post("/vinanticApi/setImagesFromFolder", (req, res) => {
     setImagesFromFolder()
-      .then(result => res.send({ result }))
-      .catch(err => res.status(500).send({ error: err.message }));
+      .then((result) => res.send({ result }))
+      .catch((err) => res.status(500).send({ error: err.message }));
   });
 
   app.listen(PORT, () => {

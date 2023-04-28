@@ -4,7 +4,7 @@ const drawImage = ({ ctx, pixels, palette, cutOffSet }) => {
   const paletteLength = palette.length;
 
   // Définir le background du canvas
-  ctx.fillStyle = 'rgb(255, 0, 0)';
+  ctx.fillStyle = "rgb(255, 0, 0)";
   ctx.fillRect(0, 0, width, height);
 
   // Précalculer les couleurs

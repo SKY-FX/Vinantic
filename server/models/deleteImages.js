@@ -1,5 +1,4 @@
-const Image = require('../schemas/image');
-
+const Image = require("../schemas/image");
 
 const deleteImages = async () => {
   try {
@@ -8,6 +7,6 @@ const deleteImages = async () => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 module.exports = deleteImages;

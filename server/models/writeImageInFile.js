@@ -7,9 +7,14 @@ const writeImageInFile = async ({ mandelbrotParams, path }) => {
   const { maxIterations, escapeRadius, step, selectedRange } = mandelbrotParams;
 
   try {
-    const createdPixels = generatePixels({ maxIterations, escapeRadius, step, selectedRange });
+    const createdPixels = generatePixels({
+      maxIterations,
+      escapeRadius,
+      step,
+      selectedRange,
+    });
     const width = createdPixels[0].length;
-    const height = createdPixels.length
+    const height = createdPixels.length;
 
     // const frameData = new Buffer(width * height * 4);
     const rawData = new Uint8Array(width * height * 4);
@@ -23,18 +28,26 @@ const writeImageInFile = async ({ mandelbrotParams, path }) => {
       }
     }
 
-    console.info('rawData', rawData);
-    const imageData = jpeg.encode({
-      data: rawData,
-      width,
-      height
-    }, 100);
+    console.info("rawData", rawData);
+    const imageData = jpeg.encode(
+      {
+        data: rawData,
+        width,
+        height,
+      },
+      100
+    );
 
-    console.info('params', { maxIterations, escapeRadius, step, selectedRange, path });
-
+    console.info("params", {
+      maxIterations,
+      escapeRadius,
+      step,
+      selectedRange,
+      path,
+    });
 
     fs.writeFileSync(path, imageData.data, {
-      encoding: "binary"
+      encoding: "binary",
     });
     return `Fichier sauvegardé à l'url ${path}`;
   } catch (err) {

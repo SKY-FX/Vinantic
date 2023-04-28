@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-mongoose.set('strictQuery', false);
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+mongoose.set("strictQuery", false);
 
 dotenv.config();
 
