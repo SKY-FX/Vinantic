@@ -25,10 +25,10 @@ module.exports = {
   rules: {
     "arrow-body-style": "warn",
     "class-methods-use-this": "off",
-    "no-console": "warn",
+    "no-console": "off",
     "semi-spacing": "error",
     "no-multi-spaces": "error",
-    "no-trailing-spaces": ["error", { skipBlankLines: false }],
+    "no-trailing-spaces": [2, { skipBlankLines: false }],
     "max-len": "off",
     "space-in-parens": "error",
     "no-useless-catch": "off",
